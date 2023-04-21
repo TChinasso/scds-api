@@ -8,6 +8,11 @@ import { reduce } from 'rxjs';
 export class OauthController {
   constructor (private readonly oauthService: OauthService) {}
 
+  @Get('teste')
+  teste(){
+    return 'teste'
+  }
+
   @Get('/callback')
   @Redirect()
   async callback(@Req() request: Request){
