@@ -4,17 +4,19 @@ import { firstValueFrom } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { PrismaService } from 'src/database/prisma.service';
 import { gh_user, user  } from '@prisma/client';
+import { AwsService } from 'src/aws/aws.service';
 
 
 @Injectable()
 export class OauthService {
-  constructor(private prisma: PrismaService, private httpService: HttpService) {}
+  constructor(private prisma: PrismaService, private httpService: HttpService, private aws: AwsService) {}
   
 
   async getJwtFromGh(code: string): Promise<AxiosResponse>{
+    const secrets = JSON.parse(await this.aws.getKeys())
     return await firstValueFrom(this.httpService.post('https://github.com/login/oauth/access_token', {
-      client_id: '55f5b2ca213eb58f5159',
-      client_secret: '356132eced2f672ca8d608b7d8d6b0c048aee328',
+      client_id: secrets.GH_CLIENT_ID,
+      client_secret: secrets.GH_CLIENT_SECRET,
       code: code,
       accept: 'json'
     }))
