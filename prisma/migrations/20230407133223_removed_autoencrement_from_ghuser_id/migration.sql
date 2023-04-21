@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "GhUser" ALTER COLUMN "id" DROP DEFAULT;
+DROP SEQUENCE "GhUser_id_seq";
