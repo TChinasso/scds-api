@@ -28,6 +28,28 @@ export class AwsService {
     }
     return response.SecretString;
   }
+
+  async getDbUrl() {
+    const secret_name = "prod/scds/db";
+
+    const client = new SecretsManagerClient({
+      region: "us-east-1",
+    });
+
+    let response: any;
+
+    try {
+      response = await client.send(
+        new GetSecretValueCommand({
+          SecretId: secret_name,
+          VersionStage: "AWSCURRENT",
+        })
+      );
+    } catch (error) {
+      throw error;
+    }
+    return response.SecretString;
+  }
 }
 
 
